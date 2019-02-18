@@ -1,0 +1,240 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: User Exercises Rest API
+  license:
+    name: Aaron Williams
+host: localhost:8080
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /api/exercises:
+    get:
+      summary: Find all exercises
+      operationId: findAllExercises
+      tags:
+        - Exercises
+      responses:
+        "200":
+          description: A paged array of exercises
+          schema:
+            $ref: '#/definitions/Exercises'
+    post:
+      summary: Save an exercise
+      operationId: saveExercises
+      tags:
+       - Exercises
+      parameters:
+        - name: exercise
+          in: body
+          description: Exercise to be saved
+          required: true
+          schema:
+            $ref: "#/definitions/Exercise"
+      responses:
+        "201":
+          description: Saved
+          schema:
+            $ref: '#/definitions/Exercise'
+  /api/exercises/{id}:
+    get:
+      summary: Info for a specific exercise
+      operationId: findExerciseById
+      tags:
+        - Exercises
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of exercise to retrieve
+          type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Exercise'
+    delete:
+      summary: Delete an exercise
+      operationId: deleteExercise
+      tags:
+        - Exercises
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of exercise to deleteUser
+          type: integer
+      responses:
+        "204":
+          description: NO CONTENT
+  /api/users:
+    get:
+      summary: Find all users
+      operationId: findAllUsers
+      tags:
+        - Users
+      responses:
+        "200":
+          description: A paged array of users
+          schema:
+            $ref: '#/definitions/Users'
+    post:
+      summary: Save a user
+      operationId: saveUser
+      tags:
+       - Users
+      parameters:
+        - name: user
+          in: body
+          description: User to be saved
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        "201":
+          description: Saved
+          schema:
+            $ref: '#/definitions/User'
+  /api/users/{id}:
+    get:
+      summary: Info for a specific user
+      operationId: findUserById
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the user to retrieve
+          type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/User' 
+    delete:
+      summary: Delete a user
+      operationId: deleteUser
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of user to deleteUser
+          type: integer
+      responses:
+        "204":
+          description: NO CONTENT
+  /api/log:
+    post:
+      summary: Save a log entry
+      operationId: saveLog
+      tags:
+       - Log
+      parameters:
+        - name: Log
+          in: body
+          description: Log to be saved
+          required: true
+          schema:
+            $ref: "#/definitions/PostLog"
+      responses:
+        "201":
+          description: Saved
+          schema:
+            $ref: '#/definitions/Log'
+  /api/log/{id}:
+    get:
+      summary: Info for a specific user
+      operationId: findLogById
+      tags:
+        - Log
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the user to retrieve
+          type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Log'
+    delete:
+      summary: Delete a log
+      operationId: deleteLog
+      tags:
+        - Log
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of exercise to deleteUser
+          type: integer
+      responses:
+        "204":
+          description: NO CONTENT
+definitions:
+  Exercise:
+    required:
+      - id
+      - description
+    properties:
+      id:
+        type: integer
+        format: int64
+      description:
+        type: string
+  Exercises:
+        type: array
+        items:
+          allOf:
+            - $ref: '#/definitions/Exercise'
+  User:
+    required:
+      - id
+      - name
+      - postcode
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      postcode:
+        type: string
+  Users:
+    type: array
+    items:
+      allOf:
+        - $ref: '#/definitions/User'
+  PostLog:
+    properties:
+      userId:
+        type: integer
+        format: int64
+      exerciseId:
+        type: integer
+      date:
+        type: string
+  Log:
+    properties:
+      id:
+        type: integer
+        format: int64
+      exerciseId:
+        type: integer
+      date:
+        type: string 
+      userId:
+        type: integer
+        format: int64
+      userName:
+        type: string 
+      description:
+        type: string

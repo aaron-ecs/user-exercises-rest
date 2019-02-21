@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-echo 'stopping server'
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)

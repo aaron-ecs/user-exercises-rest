@@ -4,8 +4,6 @@
 A very simple Spring rest webservice to help aid other example test frameworks in this repository.
 
 ### Installing and Running
-
-
 Import into your IDE as a maven project.
 
 **Running via IDE**
@@ -21,10 +19,15 @@ Create a run configuration:
 
 **Running via Docker**
 
-`docker build -f Dockerfile -t user-exercises-rest .` then `docker run -d -p 8080:8080 user-exercises-rest`
+Build/Pull:
 
+`docker build -f Dockerfile -t aaronmwilliams/user-exercises-rest .` or pull latest image from DockerHub `docker pull aaronmwilliams/user-exercises-rest`
 
-By default port 8080 will be used. 
+Run:
+
+`docker run -d -p 8080:8080 aaronmwilliams/user-exercises-rest`
+
+By default port 8080 will be used within the service.  If running on a server you may want to use this port configuration `-p 80:8080`
 
 ### Running Tests
 All unit tests
@@ -56,13 +59,21 @@ Rest-assured testing framework: https://bitbucket.org/aaronmwilliams/user-exerci
 ### IDE Plugins
 The project uses Lombok. So you will need to install this plugin otherwise you will see compile errors.
 
-### Running Tests on Jenkins
-You can create a Jenkins Build pointing to the `*/jenkinsfile`.
+### Running on Jenkins CI
+Please note to run on a Jenkins server you will need the following configuration:
+- Global dockerhub credentials
+- Python installed
+- AWS provider chain configuration
 
-Currently for the API tests the service needs to be running on port 8080.
+**Pipeline Steps**
+- *Pull*: git pull on your branch
+- *Build*: builds a new docker image
+- *Test*: runs docker-compose file to run the service and then tests
+- *Publish Artifact to S3*: zips the project, pulls `deployment-scripts` then runs `publish-to-s3.py script
+- *Push to Docker Hub*: pushes new images to docker hub using the branch and build number
+- *Deploy to EC2*: runs script `deploy_to_ec2.py` script to push live
+- *Clean Up*: deletes archive file and newly created image locally
 
-The Jenkins build will download and install any library dependencies which are required in the local maven repository.
-
-- Junit & Integration
-- Rest-Assured
-- Swagger Client
+## To Do
+- Terraform scripts to create EC2 (and more?)
+- Different Jenkins file for master and any other branch

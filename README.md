@@ -76,5 +76,5 @@ Please note to run on a Jenkins server you will need the following configuration
 
 ## To Do
 - Terraform scripts to create EC2 (and more?)
-- Different Jenkins file for master and any other branch
+- Different Jenkins file for master and any other branch (master should be tagged :latest)
 - Bug fix relating to time format missing leading 0
